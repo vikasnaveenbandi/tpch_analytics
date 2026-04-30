@@ -1,0 +1,43 @@
+version: 2
+
+models:
+  - name: fct_orders
+    description: "Fact table at order grain containing aggregated revenue and order metrics"
+
+    columns:
+      - name: order_id
+        description: "Unique identifier for each order"
+        tests:
+          - unique
+          - not_null
+
+      - name: customer_id
+        description: "Foreign key to dim_customers"
+        tests:
+          - relationships:
+              arguments:
+                to: ref('dim_customers')
+                field: customer_id
+
+      - name: net_revenue
+        description: "Total net revenue per order (sum of line item revenue after discount)"
+
+  - name: fct_order_items
+    description: "Fact table at order-item grain containing item-level revenue and metrics"
+
+    columns:
+      - name: order_status
+        description: "Status of the order"
+        tests:
+          - not_null
+          - accepted_values:
+              arguments:
+                values: ['O', 'F', 'P']
+
+      - name: quantity
+        description: "Quantity of items in the order"
+        tests:
+          - dbt_expectations.expect_column_values_to_be_between:
+              arguments:
+                min_value: 1
+                max_value: 50

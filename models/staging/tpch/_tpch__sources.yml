@@ -1,0 +1,38 @@
+version: 2
+
+sources:
+  - name: tpch_src
+    database: SNOWFLAKE_SAMPLE_DATA
+    schema: TPCH_SF1
+
+    tables:
+      - name: ORDERS
+        description: 'Raw order headers from TPC-H benchmark'
+
+        columns:
+          - name: O_ORDERKEY
+            description: 'Primary key for orders'
+            tests:
+              - unique
+              - not_null
+
+          - name: O_CUSTKEY
+            tests:
+              - not_null
+
+          - name: O_ORDERSTATUS
+            tests:
+              - accepted_values:
+                  values: ['O', 'F', 'P']
+
+
+ 
+      - name: customer
+        description: 'Raw order headers from TPC-H benchmark'
+      - name: lineitem
+        description: 'Raw line itesm from TPC-H benchmark'
+      - name: supplier
+      - name: PARTSUPP
+      - name: NATION
+      - name: REGION
+      - name: PART
