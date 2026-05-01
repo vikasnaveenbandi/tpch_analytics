@@ -28,13 +28,13 @@ jobs:
             outputs:
               dev:
                 type: snowflake
-                account: $DBT_SNOWFLAKE_ACCOUNT
-                user: $DBT_SNOWFLAKE_USER
-                password: $DBT_SNOWFLAKE_PASSWORD
-                role: SYSADMIN
-                database: DBT_DEV
-                warehouse: COMPUTE_WH
-                schema: PUBLIC
+                account: "$DBT_SNOWFLAKE_ACCOUNT"
+                user: "$DBT_SNOWFLAKE_USER"
+                password: "$DBT_SNOWFLAKE_PASSWORD"
+                role: "DBT_ROLE"
+                database: "DBT_DEV"
+                warehouse: "COMPUTE_WH"
+                schema: "PUBLIC"
                 threads: 4
           EOF
 
