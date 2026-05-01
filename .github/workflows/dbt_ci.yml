@@ -28,9 +28,9 @@ jobs:
             outputs:
               dev:
                 type: snowflake
-                account: "${DBT_SNOWFLAKE_ACCOUNT}"
-                user: "${DBT_SNOWFLAKE_USER}"
-                password: "${DBT_SNOWFLAKE_PASSWORD}"
+                account: "{{ env_var('DBT_SNOWFLAKE_ACCOUNT') }}"
+                user: "{{ env_var('DBT_SNOWFLAKE_USER') }}"
+                password: "{{ env_var('DBT_SNOWFLAKE_PASSWORD') }}"
                 role: "DBT_ROLE"
                 database: "DBT_DEV"
                 warehouse: "COMPUTE_WH"
