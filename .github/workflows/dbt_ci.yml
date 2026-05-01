@@ -21,13 +21,17 @@ jobs:
       - name: Install dbt
         run: pip install dbt-snowflake
 
-      # ✅ Validate secrets (MATCHES SECRET_1/2/3)
+      # ✅ Validate secrets
       - name: Validate secrets
         run: |
           if [ -z "${{ secrets.SECRET_1 }}" ]; then echo "SECRET_1 missing"; exit 1; fi
           if [ -z "${{ secrets.SECRET_2 }}" ]; then echo "SECRET_2 missing"; exit 1; fi
           if [ -z "${{ secrets.SECRET_3 }}" ]; then echo "SECRET_3 missing"; exit 1; fi
           echo "✅ Secrets available"
+
+      # 🔍 DEBUG (remove after success)
+      - name: Debug account value
+        run: echo "ACCOUNT=${{ secrets.SECRET_1 }}"
 
       # ✅ Create dbt profile
       - name: Create profiles.yml
