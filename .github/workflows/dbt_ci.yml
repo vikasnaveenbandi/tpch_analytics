@@ -1,7 +1,10 @@
 name: dbt CI
 
 on:
-  pull_request:
+  push:
+    branches:
+      - main
+      - feature/*
 
 jobs:
   dbt-test:
@@ -24,7 +27,7 @@ jobs:
       - name: Install dbt
         run: pip install dbt-snowflake
 
-      # ✅ DEBUG STEP
+      # ✅ Debug step (remove later if you want)
       - name: Debug env variables
         run: |
           echo "ACCOUNT=$DBT_SNOWFLAKE_ACCOUNT"
