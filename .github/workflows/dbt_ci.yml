@@ -11,9 +11,9 @@ jobs:
     runs-on: ubuntu-latest
 
     env:
-      DBT_SNOWFLAKE_ACCOUNT: "NLGTOEW-JN81924"
-      DBT_SNOWFLAKE_USER: "SNOWDBTV2"
-      DBT_SNOWFLAKE_PASSWORD: "Applelife@@2026"
+      DBT_SNOWFLAKE_ACCOUNT: ${{ secrets.SF_ACCOUNT }}
+      DBT_SNOWFLAKE_USER: ${{ secrets.SF_USER }}
+      DBT_SNOWFLAKE_PASSWORD: ${{ secrets.SF_PASSWORD }}
 
     steps:
       - name: Checkout repo
