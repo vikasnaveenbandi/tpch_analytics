@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - main
-      - feature/*
 
 jobs:
   dbt-test:
@@ -22,11 +21,13 @@ jobs:
       - name: Install dbt
         run: pip install dbt-snowflake
 
-      # 🔍 Debug (remove later if you want)
-      - name: Debug secrets
+      # ❗ Fail fast if secrets not available
+      - name: Validate secrets
         run: |
-          echo "ACCOUNT=${{ secrets.SF_ACCOUNT }}"
-          echo "USER=${{ secrets.SF_USER }}"
+          if [ -z "${{ secrets.SF_ACCOUNT }}" ]; then echo "SF_ACCOUNT missing"; exit 1; fi
+          if [ -z "${{ secrets.SF_USER }}" ]; then echo "SF_USER missing"; exit 1; fi
+          if [ -z "${{ secrets.SF_PASSWORD }}" ]; then echo "SF_PASSWORD missing"; exit 1; fi
+          echo "✅ Secrets available"
 
       # ✅ Create dbt profile
       - name: Create profiles.yml
@@ -47,10 +48,6 @@ jobs:
                 schema: "PUBLIC"
                 threads: 4
           EOF
-
-      # 🔍 Optional debug (can remove later)
-      - name: Show profiles.yml
-        run: cat ~/.dbt/profiles.yml
 
       - name: dbt deps
         run: dbt deps --profiles-dir ~/.dbt
