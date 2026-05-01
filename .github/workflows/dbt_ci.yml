@@ -10,11 +10,6 @@ jobs:
   dbt-test:
     runs-on: ubuntu-latest
 
-    env:
-      DBT_SNOWFLAKE_ACCOUNT: ${{ secrets.SF_ACCOUNT }}
-      DBT_SNOWFLAKE_USER: ${{ secrets.SF_USER }}
-      DBT_SNOWFLAKE_PASSWORD: ${{ secrets.SF_PASSWORD }}
-
     steps:
       - name: Checkout repo
         uses: actions/checkout@v3
@@ -27,11 +22,11 @@ jobs:
       - name: Install dbt
         run: pip install dbt-snowflake
 
-      # ✅ Debug step (remove later if you want)
-      - name: Debug env variables
+      # ✅ DEBUG (prove secrets exist)
+      - name: Debug secrets
         run: |
-          echo "ACCOUNT=$DBT_SNOWFLAKE_ACCOUNT"
-          echo "USER=$DBT_SNOWFLAKE_USER"
+          echo "ACCOUNT=${{ secrets.SF_ACCOUNT }}"
+          echo "USER=${{ secrets.SF_USER }}"
 
       - name: Create profiles.yml
         run: |
@@ -42,9 +37,9 @@ jobs:
             outputs:
               dev:
                 type: snowflake
-                account: "{{ env_var('DBT_SNOWFLAKE_ACCOUNT') }}"
-                user: "{{ env_var('DBT_SNOWFLAKE_USER') }}"
-                password: "{{ env_var('DBT_SNOWFLAKE_PASSWORD') }}"
+                account: "${{ secrets.SF_ACCOUNT }}"
+                user: "${{ secrets.SF_USER }}"
+                password: "${{ secrets.SF_PASSWORD }}"
                 role: "DBT_ROLE"
                 database: "DBT_DEV"
                 warehouse: "COMPUTE_WH"
