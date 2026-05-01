@@ -22,12 +22,13 @@ jobs:
       - name: Install dbt
         run: pip install dbt-snowflake
 
-      # ✅ DEBUG (prove secrets exist)
+      # 🔍 Debug (remove later if you want)
       - name: Debug secrets
         run: |
           echo "ACCOUNT=${{ secrets.SF_ACCOUNT }}"
           echo "USER=${{ secrets.SF_USER }}"
 
+      # ✅ Create dbt profile
       - name: Create profiles.yml
         run: |
           mkdir -p ~/.dbt
@@ -47,8 +48,12 @@ jobs:
                 threads: 4
           EOF
 
+      # 🔍 Optional debug (can remove later)
+      - name: Show profiles.yml
+        run: cat ~/.dbt/profiles.yml
+
       - name: dbt deps
-        run: dbt deps
+        run: dbt deps --profiles-dir ~/.dbt
 
       - name: dbt build
-        run: dbt build
+        run: dbt build --profiles-dir ~/.dbt
