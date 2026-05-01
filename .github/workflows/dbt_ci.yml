@@ -21,12 +21,12 @@ jobs:
       - name: Install dbt
         run: pip install dbt-snowflake
 
-      # ❗ Fail fast if secrets not available
+      # ✅ Validate secrets (MATCHES SECRET_1/2/3)
       - name: Validate secrets
         run: |
-          if [ -z "${{ secrets.SF_ACCOUNT }}" ]; then echo "SF_ACCOUNT missing"; exit 1; fi
-          if [ -z "${{ secrets.SF_USER }}" ]; then echo "SF_USER missing"; exit 1; fi
-          if [ -z "${{ secrets.SF_PASSWORD }}" ]; then echo "SF_PASSWORD missing"; exit 1; fi
+          if [ -z "${{ secrets.SECRET_1 }}" ]; then echo "SECRET_1 missing"; exit 1; fi
+          if [ -z "${{ secrets.SECRET_2 }}" ]; then echo "SECRET_2 missing"; exit 1; fi
+          if [ -z "${{ secrets.SECRET_3 }}" ]; then echo "SECRET_3 missing"; exit 1; fi
           echo "✅ Secrets available"
 
       # ✅ Create dbt profile
@@ -39,9 +39,9 @@ jobs:
             outputs:
               dev:
                 type: snowflake
-                account: "${{ secrets.SF_ACCOUNT }}"
-                user: "${{ secrets.SF_USER }}"
-                password: "${{ secrets.SF_PASSWORD }}"
+                account: "${{ secrets.SECRET_1 }}"
+                user: "${{ secrets.SECRET_2 }}"
+                password: "${{ secrets.SECRET_3 }}"
                 role: "DBT_ROLE"
                 database: "DBT_DEV"
                 warehouse: "COMPUTE_WH"
