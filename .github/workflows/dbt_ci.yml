@@ -7,44 +7,45 @@ jobs:
   dbt-test:
     runs-on: ubuntu-latest
 
-    steps:
-      - name: Checkout repo
-        uses: actions/checkout@v3
+steps:
+  - name: Checkout repo
+    uses: actions/checkout@v3
 
-      - name: Set up Python
-        uses: actions/setup-python@v4
-        with:
-          python-version: '3.10'
+  - name: Set up Python
+    uses: actions/setup-python@v4
+    with:
+      python-version: '3.10'
 
-      - name: Install dbt
-        run: pip install dbt-snowflake
+  - name: Install dbt
+    run: pip install dbt-snowflake
 
-      - name: Create profiles.yml
-        run: |
-          mkdir -p ~/.dbt
-          cat <<EOF > ~/.dbt/profiles.yml
-          tpch_analytics:
-            target: dev
-            outputs:
-              dev:
-                type: snowflake
-                account: "{{ env_var('DBT_SNOWFLAKE_ACCOUNT') }}"
-                user: "{{ env_var('DBT_SNOWFLAKE_USER') }}"
-                password: "{{ env_var('DBT_SNOWFLAKE_PASSWORD') }}"
-                role: "DBT_ROLE"
-                database: "DBT_DEV"
-                warehouse: "COMPUTE_WH"
-                schema: "PUBLIC"
-                threads: 4
-          EOF
+  # ✅ Debug step (correct indentation)
+  - name: Debug env variables
+    run: |
+      echo "ACCOUNT=$DBT_SNOWFLAKE_ACCOUNT"
+      echo "USER=$DBT_SNOWFLAKE_USER"
 
-      - name: dbt deps
-        run: dbt deps
+  - name: Create profiles.yml
+    run: |
+      mkdir -p ~/.dbt
+      cat <<EOF > ~/.dbt/profiles.yml
+      tpch_analytics:
+        target: dev
+        outputs:
+          dev:
+            type: snowflake
+            account: "{{ env_var('DBT_SNOWFLAKE_ACCOUNT') }}"
+            user: "{{ env_var('DBT_SNOWFLAKE_USER') }}"
+            password: "{{ env_var('DBT_SNOWFLAKE_PASSWORD') }}"
+            role: "DBT_ROLE"
+            database: "DBT_DEV"
+            warehouse: "COMPUTE_WH"
+            schema: "PUBLIC"
+            threads: 4
+      EOF
 
-      - name: dbt build
-        run: dbt build
+  - name: dbt deps
+    run: dbt deps
 
-    env:
-      DBT_SNOWFLAKE_ACCOUNT: ${{ secrets.SF_ACCOUNT }}
-      DBT_SNOWFLAKE_USER: ${{ secrets.SF_USER }}
-      DBT_SNOWFLAKE_PASSWORD: ${{ secrets.SF_PASSWORD }}
+  - name: dbt build
+    run: dbt build
