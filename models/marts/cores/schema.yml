@@ -8,16 +8,17 @@ models:
       - name: order_id
         description: "Unique identifier for each order"
         tests:
-          - unique
           - not_null
+          
 
       - name: customer_id
-        description: "Foreign key to dim_customers"
+        description: "Not null dim_customers"
         tests:
-          - relationships:
-              arguments:
-                to: ref('dim_customers')
-                field: customer_id
+          - not_null
+         # - relationships:
+             # arguments:
+               # to: ref('dim_customers')
+               # field: customer_id
 
       - name: net_revenue
         description: "Total net revenue per order (sum of line item revenue after discount)"

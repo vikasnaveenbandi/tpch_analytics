@@ -27,7 +27,7 @@ from {{ ref('int_order_items') }}
 
  select
         order_id,
-        customer_id,
+        CAST(customer_id AS STRING) AS customer_id,
         order_date,
         order_status,
 

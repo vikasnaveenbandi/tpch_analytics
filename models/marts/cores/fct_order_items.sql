@@ -27,7 +27,7 @@ from {{ ref('int_order_items') }}
         {{ dbt_utils.generate_surrogate_key(['order_id','line_number']) }} as order_item_key,
 
         order_id,
-        customer_id,
+        CAST(customer_id AS STRING) AS customer_id,
         party_id,
         supplier_id,
         order_date,
